@@ -1,11 +1,32 @@
-server:
-  image: wacupid/ngrok
-  ports:
-    - "8082:80"
-    - "4432:443"
-    - "4443:4443"
-  volumes:
-    - ~/ngrok:/myfiles
-  environment:
-    - DOMAIN=wacupid.tk
-  command: /bin/sh /server.sh
+version: '3'
+services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ~/nginx:/ngrok
+      - ~/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - ngrok
+    networks:
+      - balance
+  ngrok:
+    image: wacupid/ngrok
+    container_name: ngrok
+    ports:
+      - "8082:80"
+      - "4432:443"
+      - "4443:4443"
+    volumes:
+      - ~/ngrok:/myfiles
+    environment:
+      - DOMAIN=wacupid.tk
+    command: /bin/sh /server.sh
+    networks:
+      - balance
+networks:
+  balance:
+    external: true
