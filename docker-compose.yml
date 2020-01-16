@@ -7,5 +7,5 @@ server:
   volumes:
     - ~/ngrok:/myfiles
   environment:
-    - DOMAIN="wacupid.tk"
+    - DOMAIN=wacupid.tk
   command: /bin/sh /server.sh
